@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 // import shortid from 'shortid';
 import Container from 'components/Container';
 import TodoList from 'components/TodoList';
+import TodoEditor from 'components/TodoEditor';
+import BasicModal from 'components/Modal';
 
 function App() {
   const [todos, setTodos] = useState([
@@ -12,9 +14,22 @@ function App() {
       important: true,
     },
   ]);
+  const [showModal, setShowModal] = useState(false);
+
+  function toggleModal() {
+    setShowModal(prev => !prev);
+  }
 
   return (
     <Container>
+      <BasicModal onModalClose={toggleModal} showModal={showModal}>
+        <TodoEditor
+          onSubmit={x => {
+            console.log(x);
+          }}
+        />
+      </BasicModal>
+
       <TodoList todos={todos} />
     </Container>
   );
