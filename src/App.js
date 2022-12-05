@@ -4,12 +4,37 @@ import Container from 'components/Container';
 import TodoList from 'components/TodoList';
 import TodoEditor from 'components/TodoEditor';
 import BasicModal from 'components/Modal';
+import Filter from 'components/Filter';
+import DefaultMsg from 'components/DefaultMsg';
+import Stats from 'components/Stats';
 
 function App() {
   const [todos, setTodos] = useState(() => {
     return JSON.parse(localStorage.getItem('todos')) ?? [];
   });
   const [showModal, setShowModal] = useState(false);
+  const [filter, setFilter] = useState('');
+
+  const normalizedFilter = filter.toLowerCase();
+
+  const visibleTodos = todos.filter(todo =>
+    todo.text.toLowerCase().includes(normalizedFilter),
+  );
+
+  const completedTodos = todos.reduce(
+    (total, todo) => (todo.completed ? total + 1 : total),
+    0,
+  );
+
+  const importantTodos = todos.reduce(
+    (total, todo) => (todo.important ? total + 1 : total),
+    0,
+  );
+
+  const inProgressTodos = todos.reduce(
+    (total, todo) => (!todo.completed ? total + 1 : total),
+    0,
+  );
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
@@ -52,18 +77,36 @@ function App() {
     );
   }
 
+  function changeFilter(e) {
+    setFilter(e.currentTarget.value);
+  }
+
   return (
     <Container>
       <BasicModal onModalClose={toggleModal} showModal={showModal}>
         <TodoEditor onSubmit={addTodo} />
       </BasicModal>
 
-      <TodoList
+      <Stats
         todos={todos}
-        onDeleteTodo={deleteTodo}
-        onToggleCompleted={toggleCompleted}
-        onToggleImportant={toggleImportant}
+        completedTodos={completedTodos}
+        importantTodos={importantTodos}
+        inProgressTodos={inProgressTodos}
       />
+
+      {todos.length === 0 ? (
+        <DefaultMsg />
+      ) : (
+        <>
+          <Filter filter={filter} onFilterChange={changeFilter} />
+          <TodoList
+            todos={visibleTodos}
+            onDeleteTodo={deleteTodo}
+            onToggleCompleted={toggleCompleted}
+            onToggleImportant={toggleImportant}
+          />
+        </>
+      )}
     </Container>
   );
 }
