@@ -9,10 +9,17 @@ import Tooltip from '@mui/material/Tooltip';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function Todo({ text, completed, important }) {
+function Todo({
+  text,
+  completed,
+  important,
+  onDelete,
+  onToggleCompleted,
+  onToggleImportant,
+}) {
   return (
     <>
-      <Checkbox {...label} checked={completed} onChange={() => {}} />
+      <Checkbox {...label} checked={completed} onChange={onToggleCompleted} />
 
       <Typography variant="body1" marginRight="auto">
         {text}
@@ -25,7 +32,7 @@ function Todo({ text, completed, important }) {
           checkedIcon={<BookmarkIcon color="warning" />}
           sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
           checked={important}
-          onChange={() => {}}
+          onChange={onToggleImportant}
         />
       </Tooltip>
 
@@ -34,7 +41,7 @@ function Todo({ text, completed, important }) {
           aria-label="delete"
           size="large"
           color="primary"
-          onClick={() => {}}
+          onClick={onDelete}
         >
           <DeleteIcon fontSize="inherit" />
         </IconButton>
