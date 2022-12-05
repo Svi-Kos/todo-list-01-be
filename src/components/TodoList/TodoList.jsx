@@ -1,5 +1,5 @@
 import React from 'react';
-// import Todo from 'components/Todo';
+import Todo from 'components/Todo';
 import s from './TodoList.module.css';
 
 function TodoList({ todos }) {
@@ -10,7 +10,7 @@ function TodoList({ todos }) {
           key={id}
           className={`${s.item} ${completed ? `${s.itemCompleted}` : ''}`}
         >
-          <p>{text}</p>
+          <Todo text={text} completed={completed} important={important} />
         </li>
       ))}
     </ul>

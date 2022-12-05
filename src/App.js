@@ -9,7 +9,7 @@ function App() {
       id: '1',
       text: 'test1',
       completed: true,
-      important: false,
+      important: true,
     },
   ]);
 
