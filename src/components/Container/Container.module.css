@@ -1,0 +1,11 @@
+.Container {
+  margin: 15px auto;
+  border-radius: 5px;
+  max-width: 1440px;
+  background-color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+.box {
+  padding: 15px;
+}
