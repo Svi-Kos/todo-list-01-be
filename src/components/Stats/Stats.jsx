@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
@@ -12,7 +13,24 @@ const Item = styled(Box)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function Stats({ todos, completedTodos, importantTodos, inProgressTodos }) {
+function Stats() {
+  const todos = useSelector(state => state.todos.items);
+
+  const completedTodos = todos.reduce(
+    (total, todo) => (todo.completed ? total + 1 : total),
+    0,
+  );
+
+  const importantTodos = todos.reduce(
+    (total, todo) => (todo.important ? total + 1 : total),
+    0,
+  );
+
+  const inProgressTodos = todos.reduce(
+    (total, todo) => (!todo.completed ? total + 1 : total),
+    0,
+  );
+
   return (
     <div className={s.stats}>
       <Stack direction="row" spacing={2}>
