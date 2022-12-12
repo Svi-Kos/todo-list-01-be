@@ -6,17 +6,25 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Tooltip from '@mui/material/Tooltip';
+import EditIcon from '@mui/icons-material/Edit';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 function Todo({
   text,
   completed,
-  important,
-  onDelete,
   onToggleCompleted,
   onToggleImportant,
+  onDelete,
+  onEdit,
+  important,
+  toggleModal,
 }) {
+  const handleClick = () => {
+    toggleModal();
+    onEdit();
+  };
+
   return (
     <>
       <Checkbox {...label} checked={completed} onChange={onToggleCompleted} />
@@ -34,6 +42,17 @@ function Todo({
           checked={important}
           onChange={onToggleImportant}
         />
+      </Tooltip>
+
+      <Tooltip title="Edit">
+        <IconButton
+          aria-label="edit"
+          size="large"
+          color="primary"
+          onClick={handleClick}
+        >
+          <EditIcon fontSize="inherit" />
+        </IconButton>
       </Tooltip>
 
       <Tooltip title="Delete">
