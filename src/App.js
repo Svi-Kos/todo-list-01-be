@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearTodo } from 'redux/todos/todos-actions';
+import { fetchTodos } from 'redux/todos/todos-operations';
 import { getVisibleTodos, getTodoToEdit } from 'redux/todos/todos-selectors';
 import Container from 'components/Container';
 import TodoList from 'components/TodoList';
@@ -15,6 +16,10 @@ function App() {
   const todos = useSelector(getVisibleTodos);
   const todoToEdit = useSelector(getTodoToEdit);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
 
   function toggleModal() {
     setShowModal(prev => !prev);

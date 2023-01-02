@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, editTodo } from 'redux/todos/todos-actions';
+import { addTodo, editTodo } from 'redux/todos/todos-operations';
 import { getTodoToEdit } from 'redux/todos/todos-selectors';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -11,7 +11,7 @@ import Alert from '@mui/material/Alert';
 
 function TodoEditor({ onSave }) {
   const todoToEdit = useSelector(getTodoToEdit);
-  const { id, text } = todoToEdit;
+  const { id, text, completed, important } = todoToEdit;
 
   const [message, setMessage] = useState(text ? text : '');
   const [info, setInfo] = useState(false);
@@ -23,7 +23,16 @@ function TodoEditor({ onSave }) {
     if (message === '') {
       setInfo(true);
     } else {
-      text ? dispatch(editTodo(id, message)) : dispatch(addTodo(message));
+      text
+        ? dispatch(
+            editTodo({
+              _id: id,
+              text: message,
+              completed,
+              important,
+            }),
+          )
+        : dispatch(addTodo(message));
 
       setInfo(false);
     }
