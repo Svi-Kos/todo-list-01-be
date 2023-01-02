@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, editTodo } from 'redux/todos/todos-actions';
+import { getTodoToEdit } from 'redux/todos/todos-selectors';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -9,9 +10,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import Alert from '@mui/material/Alert';
 
 function TodoEditor({ onSave }) {
-  const todoToEditText = useSelector(state => state.todos.todoToEdit.text);
-  const todoToEditId = useSelector(state => state.todos.todoToEdit.id);
-  const [message, setMessage] = useState(todoToEditText ? todoToEditText : '');
+  const todoToEdit = useSelector(getTodoToEdit);
+  const { id, text } = todoToEdit;
+
+  const [message, setMessage] = useState(text ? text : '');
   const [info, setInfo] = useState(false);
   const dispatch = useDispatch();
 
@@ -21,9 +23,7 @@ function TodoEditor({ onSave }) {
     if (message === '') {
       setInfo(true);
     } else {
-      todoToEditText
-        ? dispatch(editTodo(todoToEditId, message))
-        : dispatch(addTodo(message));
+      text ? dispatch(editTodo(id, message)) : dispatch(addTodo(message));
 
       setInfo(false);
     }
@@ -47,9 +47,9 @@ function TodoEditor({ onSave }) {
         <Button
           type="submit"
           variant="contained"
-          startIcon={todoToEditText ? <EditIcon /> : <AddCircleIcon />}
+          startIcon={text ? <EditIcon /> : <AddCircleIcon />}
         >
-          {todoToEditText ? 'Edit text' : 'Add task'}
+          {text ? 'Edit text' : 'Add task'}
         </Button>
       </Stack>
     </form>

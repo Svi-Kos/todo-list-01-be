@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearTodo } from 'redux/todos/todos-actions';
+import { getVisibleTodos, getTodoToEdit } from 'redux/todos/todos-selectors';
 import Container from 'components/Container';
 import TodoList from 'components/TodoList';
 import TodoEditor from 'components/TodoEditor';
@@ -11,13 +12,13 @@ import Stats from 'components/Stats';
 
 function App() {
   const [showModal, setShowModal] = useState(false);
-  const todos = useSelector(state => state.todos.items);
-  const textToEdit = useSelector(state => state.todos.todoToEdit.text);
+  const todos = useSelector(getVisibleTodos);
+  const todoToEdit = useSelector(getTodoToEdit);
   const dispatch = useDispatch();
 
   function toggleModal() {
     setShowModal(prev => !prev);
-    if (textToEdit) {
+    if (todoToEdit.text) {
       dispatch(clearTodo());
     }
   }
@@ -35,7 +36,7 @@ function App() {
       ) : (
         <>
           <Filter />
-          <TodoList toggleModal={toggleModal} />
+          <TodoList toggleModal={toggleModal} todos={todos} />
         </>
       )}
     </Container>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   deleteTodo,
   toggleCompleted,
@@ -9,19 +9,7 @@ import {
 import Todo from 'components/Todo';
 import s from './TodoList.module.css';
 
-function TodoList({ toggleModal }) {
-  const getVisibleTodos = (allTodos, filter) => {
-    const normalizedFilter = filter.toLowerCase();
-
-    return allTodos.filter(todo =>
-      todo.text.toLowerCase().includes(normalizedFilter),
-    );
-  };
-
-  const todos = useSelector(state =>
-    getVisibleTodos(state.todos.items, state.todos.filter),
-  );
-
+function TodoList({ toggleModal, todos }) {
   const dispatch = useDispatch();
 
   return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { getTodos } from 'redux/todos/todos-selectors';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
@@ -14,17 +15,11 @@ const Item = styled(Box)(({ theme }) => ({
 }));
 
 function Stats() {
-  const todos = useSelector(state => state.todos.items);
+  const todos = useSelector(getTodos);
 
-  const completedTodos = todos.reduce(
-    (total, todo) => (todo.completed ? total + 1 : total),
-    0,
-  );
-
-  const importantTodos = todos.reduce(
-    (total, todo) => (todo.important ? total + 1 : total),
-    0,
-  );
+  function toggleOption(option) {
+    return todos.reduce((total, todo) => (todo[option] ? total + 1 : total), 0);
+  }
 
   const inProgressTodos = todos.reduce(
     (total, todo) => (!todo.completed ? total + 1 : total),
@@ -36,8 +31,8 @@ function Stats() {
       <Stack direction="row" spacing={2}>
         <Item>All: {todos.length}</Item>
         <Item>In progress: {inProgressTodos}</Item>
-        <Item>Completed: {completedTodos}</Item>
-        <Item>Important: {importantTodos}</Item>
+        <Item>Completed: {toggleOption('completed')}</Item>
+        <Item>Important: {toggleOption('important')}</Item>
       </Stack>
     </div>
   );
