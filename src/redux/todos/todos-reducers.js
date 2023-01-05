@@ -1,35 +1,21 @@
 import { createReducer, combineReducers } from '@reduxjs/toolkit';
+import { changeFilter, assignTodo, clearTodo } from './todos-actions';
 import {
+  fetchTodos,
   addTodo,
   deleteTodo,
-  toggleCompleted,
-  toggleImportant,
-  changeFilter,
-  assignTodo,
   editTodo,
-  clearTodo,
-} from './todos-actions';
+} from 'redux/todos/todos-operations';
 
 export const items = createReducer([], builder => {
   builder
-    .addCase(addTodo, (state, { payload }) => [payload, ...state])
-    .addCase(deleteTodo, (state, { payload }) =>
-      state.filter(({ id }) => id !== payload),
+    .addCase(fetchTodos.fulfilled, (_, action) => action.payload)
+    .addCase(addTodo.fulfilled, (state, { payload }) => [payload, ...state])
+    .addCase(deleteTodo.fulfilled, (state, { payload }) =>
+      state.filter(({ _id }) => _id !== payload),
     )
-    .addCase(toggleCompleted, (state, { payload }) =>
-      state.map(todo =>
-        todo.id === payload ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    )
-    .addCase(toggleImportant, (state, { payload }) =>
-      state.map(todo =>
-        todo.id === payload ? { ...todo, important: !todo.important } : todo,
-      ),
-    )
-    .addCase(editTodo, (state, { payload }) =>
-      state.map(todo =>
-        todo.id === payload.id ? { ...todo, text: payload.text } : todo,
-      ),
+    .addCase(editTodo.fulfilled, (state, { payload }) =>
+      state.map(todo => (todo._id === payload._id ? payload : todo)),
     );
 });
 
@@ -37,18 +23,55 @@ export const filter = createReducer('', builder => {
   builder.addCase(changeFilter, (_, { payload }) => payload);
 });
 
-const initState = { id: '', text: '' };
-export const todoToEdit = createReducer(initState, builder => {
+const initStateForEdit = {
+  id: '',
+  text: '',
+  completed: false,
+  important: false,
+};
+export const todoToEdit = createReducer(initStateForEdit, builder => {
   builder
     .addCase(assignTodo, (state, { payload }) => ({
       id: payload.id,
       text: payload.text,
+      completed: payload.completed,
+      important: payload.important,
     }))
-    .addCase(clearTodo, () => initState);
+    .addCase(clearTodo, () => initStateForEdit);
+});
+
+const isLoading = createReducer(false, builder => {
+  builder
+    .addCase(fetchTodos.pending, () => true)
+    .addCase(fetchTodos.fulfilled, () => false)
+    .addCase(fetchTodos.rejected, () => false)
+    .addCase(addTodo.pending, () => true)
+    .addCase(addTodo.fulfilled, () => false)
+    .addCase(addTodo.rejected, () => false)
+    .addCase(deleteTodo.pending, () => true)
+    .addCase(deleteTodo.fulfilled, () => false)
+    .addCase(deleteTodo.rejected, () => false)
+    .addCase(editTodo.pending, () => true)
+    .addCase(editTodo.fulfilled, () => false)
+    .addCase(editTodo.rejected, () => false);
+});
+
+const error = createReducer(null, builder => {
+  builder
+    .addCase(fetchTodos.pending, () => null)
+    .addCase(fetchTodos.rejected, () => (_, action) => action.payload)
+    .addCase(addTodo.pending, () => null)
+    .addCase(addTodo.rejected, () => (_, action) => action.payload)
+    .addCase(deleteTodo.pending, () => null)
+    .addCase(deleteTodo.rejected, () => (_, action) => action.payload)
+    .addCase(editTodo.pending, () => null)
+    .addCase(editTodo.rejected, () => (_, action) => action.payload);
 });
 
 export default combineReducers({
   items,
   filter,
   todoToEdit,
+  isLoading,
+  error,
 });
