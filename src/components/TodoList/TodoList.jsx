@@ -20,17 +20,13 @@ function TodoList({ toggleModal, todos }) {
             completed={completed}
             important={important}
             onToggleCompleted={() =>
-              dispatch(
-                editTodo({ _id, text, completed: !completed, important }),
-              )
+              dispatch(editTodo({ _id, completed: !completed }))
             }
             onToggleImportant={() =>
-              dispatch(
-                editTodo({ _id, text, completed, important: !important }),
-              )
+              dispatch(editTodo({ _id, important: !important }))
             }
             onDelete={() => dispatch(deleteTodo(_id))}
-            onEdit={() => dispatch(assignTodo(_id, text, completed, important))}
+            onEdit={() => dispatch(assignTodo(_id, text))}
             toggleModal={toggleModal}
           />
         </li>

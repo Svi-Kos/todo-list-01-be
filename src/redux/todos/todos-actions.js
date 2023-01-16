@@ -9,8 +9,6 @@ export const assignTodo = createAction(
       payload: {
         id,
         text,
-        completed,
-        important,
       },
     };
   },

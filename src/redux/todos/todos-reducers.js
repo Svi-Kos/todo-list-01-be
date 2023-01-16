@@ -34,8 +34,6 @@ export const todoToEdit = createReducer(initStateForEdit, builder => {
     .addCase(assignTodo, (state, { payload }) => ({
       id: payload.id,
       text: payload.text,
-      completed: payload.completed,
-      important: payload.important,
     }))
     .addCase(clearTodo, () => initStateForEdit);
 });

@@ -2,7 +2,6 @@
   "name": "todo-list-01-be",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Svi-Kos.github.io/todo-list-01-be",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
