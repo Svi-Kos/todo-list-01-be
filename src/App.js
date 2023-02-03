@@ -1,49 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { clearTodo } from 'redux/todos/todos-actions';
-import { fetchTodos } from 'redux/todos/todos-operations';
-import { getVisibleTodos, getTodoToEdit } from 'redux/todos/todos-selectors';
+import React from 'react'; // useEffect
+import {
+  useSelector,
+  // useDispatch
+} from 'react-redux';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { getIsLoggedIn } from 'redux/auth/auth-selectors';
 import Container from 'components/Container';
-import TodoList from 'components/TodoList';
-import TodoEditor from 'components/TodoEditor';
-import BasicModal from 'components/Modal';
-import Filter from 'components/Filter';
-import DefaultMsg from 'components/DefaultMsg';
-import Stats from 'components/Stats';
+import AppBar from 'components/AppBar';
+import SignInView from 'views/SignInView';
+import TodosView from 'views/TodosView';
 
 function App() {
-  const [showModal, setShowModal] = useState(false);
-  const todos = useSelector(getVisibleTodos);
-  const todoToEdit = useSelector(getTodoToEdit);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchTodos());
-  }, [dispatch]);
-
-  function toggleModal() {
-    setShowModal(prev => !prev);
-    if (todoToEdit.text) {
-      dispatch(clearTodo());
-    }
-  }
+  const isLoggedIn = useSelector(getIsLoggedIn);
 
   return (
     <Container>
-      <BasicModal onModalClose={toggleModal} showModal={showModal}>
-        <TodoEditor onSave={toggleModal} />
-      </BasicModal>
+      <AppBar />
 
-      <Stats />
-
-      {todos.length === 0 ? (
-        <DefaultMsg />
-      ) : (
-        <>
-          <Filter />
-          <TodoList toggleModal={toggleModal} todos={todos} />
-        </>
-      )}
+      <Routes>
+        <Route path="/" element={isLoggedIn ? <TodosView /> : <SignInView />} />
+        <Route
+          path="signin"
+          element={isLoggedIn ? <Navigate replace to="/" /> : <SignInView />}
+        />
+        <Route path="*" element={<Navigate to="signin" />} />
+      </Routes>
     </Container>
   );
 }
