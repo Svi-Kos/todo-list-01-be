@@ -12,7 +12,9 @@ function AppBar() {
       {isLoggedIn ? (
         <UserMenu />
       ) : (
-        <Typography variant="body1">Sign in to start adding tasks</Typography>
+        <Typography variant="h5" color="primary">
+          Sign in to start adding tasks
+        </Typography>
       )}
     </header>
   );

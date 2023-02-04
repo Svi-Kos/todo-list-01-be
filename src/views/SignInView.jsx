@@ -1,13 +1,13 @@
 import { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { signin } from 'redux/auth/auth-operations';
+import { useDispatch } from 'react-redux';
+import { signin } from 'redux/auth/auth-operations';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import LoginIcon from '@mui/icons-material/Login';
 import FormControl from '@mui/material/FormControl';
 
 function SignInView() {
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [userName, setName] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,7 +26,7 @@ function SignInView() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    // dispatch(signin({ userName, password }));
+    dispatch(signin({ userName, password }));
     setName('');
 
     setPassword('');

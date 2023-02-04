@@ -1,18 +1,16 @@
-import {
-  useSelector,
-  // useDispatch
-} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { getUser } from 'redux/auth/auth-selectors';
-// import { logout } from 'redux/auth/auth-operations';
+import { logout } from 'redux/auth/auth-operations';
 
 import s from './AppBar.module.css';
 
 function UserMenu() {
-  // const dispatch = useDispatch();
-  const name = useSelector(getUser) || 'User Name';
+  const dispatch = useDispatch();
+  const name = useSelector(getUser);
 
   return (
     <div className={s.container}>
@@ -27,7 +25,8 @@ function UserMenu() {
       <Button
         variant="contained"
         size="small"
-        // onClick={() => dispatch(logout())}
+        onClick={() => dispatch(logout())}
+        startIcon={<LogoutIcon />}
       >
         Log Out
       </Button>
