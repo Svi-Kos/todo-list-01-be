@@ -1,7 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
+import { Button, Avatar, Chip } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { getUser } from 'redux/auth/auth-selectors';
 import { logout } from 'redux/auth/auth-operations';

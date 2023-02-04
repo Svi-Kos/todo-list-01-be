@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, editTodo } from 'redux/todos/todos-operations';
 import { getTodoToEdit } from 'redux/todos/todos-selectors';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import { Button, Alert, Stack, TextField } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
-import Alert from '@mui/material/Alert';
 
 function TodoEditor({ onSave }) {
   const todoToEdit = useSelector(getTodoToEdit);
-  const { id, text, completed, important } = todoToEdit;
+  const { id, text } = todoToEdit;
 
   const [message, setMessage] = useState(text ? text : '');
   const [info, setInfo] = useState(false);
@@ -20,7 +17,7 @@ function TodoEditor({ onSave }) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (message === '') {
+    if (message.trim() === '') {
       setInfo(true);
     } else {
       text
@@ -28,16 +25,14 @@ function TodoEditor({ onSave }) {
             editTodo({
               _id: id,
               text: message,
-              completed,
-              important,
             }),
           )
         : dispatch(addTodo(message));
 
       setInfo(false);
+      onSave();
+      setMessage('');
     }
-    onSave();
-    setMessage('');
   };
 
   return (

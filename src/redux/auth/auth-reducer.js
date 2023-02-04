@@ -25,12 +25,14 @@ const authReducer = createReducer(initState, builder => {
     }))
     .addCase(signin.rejected, (state, action) => ({
       ...state,
+      isRefreshing: false,
       authError: action.payload,
     }))
     .addCase(logout.fulfilled, () => initState)
     .addCase(logout.pending, state => ({ ...state, authError: null }))
     .addCase(logout.rejected, (state, action) => ({
       ...state,
+      isRefreshing: false,
       authError: action.payload,
     }))
     .addCase(refreshUser.fulfilled, (state, { payload }) => ({
@@ -45,10 +47,7 @@ const authReducer = createReducer(initState, builder => {
       isRefreshing: true,
       authError: null,
     }))
-    .addCase(refreshUser.rejected, (state, action) => ({
-      ...state,
-      authError: action.payload,
-    }));
+    .addCase(refreshUser.rejected, () => initState);
 });
 
 export default authReducer;

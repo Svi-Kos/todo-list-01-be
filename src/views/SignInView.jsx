@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signin } from 'redux/auth/auth-operations';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { Button, TextField, FormControl } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
-import FormControl from '@mui/material/FormControl';
 
 function SignInView() {
   const dispatch = useDispatch();
@@ -39,7 +37,7 @@ function SignInView() {
           type="text"
           name="userName"
           label="Name"
-          helperText="10 symbols max"
+          helperText="30 symbols max"
           variant="outlined"
           autoComplete="off"
           value={userName}

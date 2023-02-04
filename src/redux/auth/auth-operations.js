@@ -15,6 +15,12 @@ const token = {
 export const signin = createAsyncThunk(
   'auth/signin',
   async (credentials, { rejectWithValue }) => {
+    const { userName, password } = credentials;
+
+    if (userName.trim() === '' || password.trim() === '') {
+      return rejectWithValue('Name and password are required');
+    }
+
     return axios
       .post('/users/signin', credentials)
       .then(({ data }) => {
@@ -43,7 +49,7 @@ export const refreshUser = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const persistedToken = getState().auth.token;
     if (persistedToken === null) {
-      return rejectWithValue();
+      return rejectWithValue('Unauthorized');
     }
 
     token.set(persistedToken);
