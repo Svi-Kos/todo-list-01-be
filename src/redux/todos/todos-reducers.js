@@ -38,22 +38,6 @@ export const todoToEdit = createReducer(initStateForEdit, builder => {
     .addCase(clearTodo, () => initStateForEdit);
 });
 
-const isLoading = createReducer(false, builder => {
-  builder
-    .addCase(fetchTodos.pending, () => true)
-    .addCase(fetchTodos.fulfilled, () => false)
-    .addCase(fetchTodos.rejected, () => false)
-    .addCase(addTodo.pending, () => true)
-    .addCase(addTodo.fulfilled, () => false)
-    .addCase(addTodo.rejected, () => false)
-    .addCase(deleteTodo.pending, () => true)
-    .addCase(deleteTodo.fulfilled, () => false)
-    .addCase(deleteTodo.rejected, () => false)
-    .addCase(editTodo.pending, () => true)
-    .addCase(editTodo.fulfilled, () => false)
-    .addCase(editTodo.rejected, () => false);
-});
-
 const error = createReducer(null, builder => {
   builder
     .addCase(fetchTodos.pending, () => null)
@@ -70,6 +54,5 @@ export default combineReducers({
   items,
   filter,
   todoToEdit,
-  isLoading,
   error,
 });

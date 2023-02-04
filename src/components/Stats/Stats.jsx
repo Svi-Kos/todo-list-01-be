@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getTodos } from 'redux/todos/todos-selectors';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { Box, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import s from './Stats.module.css';
 
